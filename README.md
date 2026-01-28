@@ -16,19 +16,25 @@ The goal is to demonstrate UI automation, API + UI validation, and debugging/ref
 
 ## Project Structure
 
-cypress/e2e/
-- workflow.cy.js → Task 1 (UI End-to-End flow)  
-- api-ui.cy.js → Task 2 (API + UI validation)  
-- debug.cy.js → Task 3 (Refactor flaky test)
+```text
+cypress/
+  e2e/
+    workflow.cy.js     → Task 1 (UI End-to-End flow)
+    api-ui.cy.js       → Task 2 (API + UI validation)
+    debug.cy.js        → Task 3 (Refactor flaky test)
 
-cypress/fixtures/
-- user.json → login credentials  
-- testData.json → SKU and special instructions  
+  fixtures/
+    user.json          → Login credentials
+    testData.json      → SKU and special instructions
 
-cypress/support/
-- commands.js → reusable commands (login, search, cart actions)
+  support/
+    commands.js        → Reusable commands (login, search, cart actions)
+cypress.confi
+package.json
+package-lock.json
+README.md
 
----
+```
 
 ## Setup Instructions
 
@@ -42,16 +48,21 @@ cypress/support/
  
  ---
  How to Run Tests
-- Open Cypress Test Runner
-- Select E2E Testing
-- Choose Chrome
-- Click any test file:
+
+ ```text
+ Open Cypress Test Runner
+ Select E2E Testing
+ Choose Chrome
+ Click any test file:
  - workflow.cy.js
-- api-ui.cy.js
-- debug.cy.js
+ - api-ui.cy.js
+ - debug.cy.js
+```
 Or run all tests headless:
+```text
  npx cypress run
- 
+
+ ```
  ---
  
 # Task 1 – UI Automation (End-to-End Workflow)
@@ -74,9 +85,12 @@ A real user flow on the Stuller website:
  - Makes code cleaner and easier to maintain
 
 Example:
-- cy.loginStuller()
-- cy.searchFromHome()
-- cy.setCartSpecialInstructions()
+```text
+ cy.loginStuller()
+ cy.searchFromHome()
+ cy.setCartSpecialInstructions()
+
+```
 
 - This shows real-world framework approach.
 
