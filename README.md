@@ -9,6 +9,7 @@ Purpose
 Task 1 was to automate a realistic user flow on the Stuller website using Cypress.
 
 What I automated
+
 Cypress QA Automation Assessment
 
 This project demonstrates my approach to UI automation, API testing, and debugging flaky tests using Cypress.
@@ -171,8 +172,8 @@ Easier to maintain
 Less dependent on timing
 
 Framework Design Decisions
-Why I used commands.js
 
+Why I used commands.js
 Login, search, and cart actions are reused across tests.
 Creating custom commands:
 
@@ -187,7 +188,6 @@ Example:
 cy.loginStuller(username, password)
 cy.searchFromHome(sku)
 
-
 This is a standard practice.
 
 # Assumptions
@@ -201,7 +201,6 @@ Selectors may need adjustment if UI changes significantly, but current approach 
 # Future Improvements
 
 If this was a long-term project, I would add:
-
 
 Page Object Model for larger scale
 
