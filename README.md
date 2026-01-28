@@ -1,211 +1,168 @@
-## Cypress Automation Assessment 
+# Cypress Automation Assessment
 
-This project contains three tasks completed using Cypress.
-The goal was to demonstrate UI automation, API + UI validation, and debugging/refactoring skills.
+This project contains three tasks completed using Cypress.  
+The goal is to demonstrate UI automation, API + UI validation, and debugging/refactoring flaky tests.
 
-## Task 1 – UI Automation (End-to-End Workflow)
-Purpose
+---
 
-Task 1 was to automate a realistic user flow on the Stuller website using Cypress.
+## Tech Stack
+- Cypress (E2E testing)
+- JavaScript
+- Node.js
+- Fixtures for test data
+- Custom Cypress commands
 
-What I automated
+---
 
-Cypress QA Automation Assessment
+## Project Structure
 
-This project demonstrates my approach to UI automation, API testing, and debugging flaky tests using Cypress.
-It includes three tasks as part of the assessment.
+cypress/e2e/
+- workflow.cy.js → Task 1 (UI End-to-End flow)  
+- api-ui.cy.js → Task 2 (API + UI validation)  
+- debug.cy.js → Task 3 (Refactor flaky test)
 
-Project Structure
-cypress/
-  e2e/
-    workflow.cy.js     → Task 1 (UI End-to-End flow)
-    api-ui.cy.js       → Task 2 (API + UI validation)
-    debug.cy.js        → Task 3 (Refactoring flaky test)
-  fixtures/
-    user.json          → Login data
-    testData.json      → SKU and special instructions
-  support/
-    commands.js       → Reusable commands (login, search, cart actions)
+cypress/fixtures/
+- user.json → login credentials  
+- testData.json → SKU and special instructions  
 
-cypress.config.js
-package.json
-README.md
+cypress/support/
+- commands.js → reusable commands (login, search, cart actions)
 
-Setup Instructions
-Prerequisites
+---
 
-Node.js installed (LTS version recommended)
+## Setup Instructions
 
-npm
+1. Install Node.js  
+2. Open project folder in VS Code  
+3. Run this in terminal:
+   ```bash
+   npm install
+4. Open Cypress:
+ npx cypress open
+ 
+ ---
+ How to Run Tests
+- Open Cypress Test Runner
+- Select E2E Testing
+- Choose Chrome
+- Click any test file:
+ - workflow.cy.js
+- api-ui.cy.js
+- debug.cy.js
+Or run all tests headless:
+ npx cypress run
+ 
+ ---
+ 
+# Task 1 – UI Automation (End-to-End Workflow)
 
-Steps
+## What I automated
 
-Download and unzip the project
+A real user flow on the Stuller website:
+- Login to application
+- Search product using SKU
+- Open product page
+- Add product to cart
+- Verify SKU is present in cart
+- Add special instructions
+- Verify instructions appear
 
-Open terminal inside project folder
+## Why I used commands.js
 
-Install dependencies:
+ - To avoid duplicate code
+ - To keep login, search, cart logic reusable
+ - Makes code cleaner and easier to maintain
 
-npm install
+Example:
+- cy.loginStuller()
+- cy.searchFromHome()
+- cy.setCartSpecialInstructions()
 
-How to Run Tests
-Run with Cypress UI (best for demo)
-npx cypress open
+- This shows real-world framework approach.
 
-
-Then select and run:
-
-workflow.cy.js → Task 1
-
-api-ui.cy.js → Task 2
-
-debug.cy.js → Task 3
-
-Run all tests headless
-npx cypress run
-
-# Task 1 – UI End-to-End Workflow
-
-File: cypress/e2e/workflow.cy.js
-
-This test automates a real user flow:
-
-Login using credentials from fixture
-
-Search SKU from homepage
-
-Open product
-
-Add product to cart
-
-Verify SKU exists in cart
-
-Add special instructions
-
-Verify instructions appear
-
-Why I designed it this way
-
-Used fixtures (user.json, testData.json) → keeps data separate from code
-
-Used custom commands → reusable login/search logic
-
-Used cy.contains() and visible selectors → more stable than brittle CSS classes
-
-Avoided hard waits (cy.wait) → used Cypress retry with should() instead
-
-This reflects real-world E2E automation design.
-
+---
 # Task 2 – API + UI Hybrid Validation
 
-File: cypress/e2e/api-ui.cy.js
+In this task I validated data between backend (API) and frontend (UI).
 
-This test validates consistency between backend and frontend.
+## What I validated
 
-Flow:
-
-Login (price visible only after login)
-
-Read SKU from fixture
-
-Call API using cy.request()
-
-Validate:
-
-Status code = 200
-
-SKU
-
-Price.Value
-
-Description
-
-Status
-
-Search same SKU in UI using cy.searchFromHome() command
-
-Compare API values with UI values
+Using cy.request():
+- HTTP status code = 200
+- SKU from API matches UI
+- Price from API matches UI (after login)
+- Description matches product title
+- Status matches availability text
 
 # Why this is important
 
-This ensures the data shown to users in UI is coming correctly from backend.
-This type of hybrid validation is commonly used in real projects to catch integration issues.
+Sometimes UI can show wrong data even if backend is correct.
+This test ensures data consistency between layers, which is common in real projects.
 
-Task 3 – Debugging & Reliability Improvements
+---
 
-File: cypress/e2e/debug.cy.js
+# Task 3 – Debugging & Refactoring Flaky Tests
 
-This task focuses on improving an intentionally flaky test.
+This task was about improving an existing unstable test.
 
-What was wrong in the original test
+## What was wrong originally
 
-Used many cy.wait() hard waits
+- Used hard waits like cy.wait(3000)
+- Used brittle selectors like eq(8)
+- Tests were failing randomly
+- Long chained commands caused re-render issues
+## What I changed
+- Removed hard waits and used:
+ - cy.contains()
+ - should('be.visible')
+- Replaced index-based selectors with meaningful selectors
+- Broke long chains into smaller stable steps
+- Used .filter(':visible') to avoid hidden elements
 
-Used brittle selectors like eq(8)
+## Why this improves stability
 
-Assumed fixed load time
+- Tests now wait for real UI behavior
+- Less dependency on DOM order
+- Less flaky failures
+- More maintainable test
 
-Failed randomly depending on timing
+---
 
-What I changed
+# Framework Design Decisions
 
-Removed hard waits and used conditional waits (should, contains)
-
-Replaced index-based selectors with visible element selectors
-
-Added validation before actions (element visible/enabled)
-
-Added 2 additional test cases
-
-Improved structure for readability
-
-Result
-
-Tests are now:
-
-More stable
-
-Easier to understand
-
-Easier to maintain
-
-Less dependent on timing
-
-Framework Design Decisions
-
-Why I used commands.js
-Login, search, and cart actions are reused across tests.
-Creating custom commands:
-
-Avoids code duplication
-
-Makes tests cleaner
-
-Improves maintainability
-
-Example:
-
-cy.loginStuller(username, password)
-cy.searchFromHome(sku)
-
-This is a standard practice.
+- Used fixtures for test data → easier to change data
+- Used custom commands → reusable functions
+- Avoided hard waits → improved stability
+- Used flexible selectors → tests survive UI changes
+- Added defensive checks → tests don’t break when optional fields are missing
 
 # Assumptions
 
-Some UI/API data may not perfectly match (as mentioned in assessment note).
+- Some UI elements (like price or ship date) may require login
+- API may return different structure depending on auth
+- Cart UI structure can change, so selectors are flexible
 
-Login is required to view pricing.
-
-Selectors may need adjustment if UI changes significantly, but current approach is designed to be flexible.
+---
 
 # Future Improvements
 
-If this was a long-term project, I would add:
+If I get more time, I would:
 
-Page Object Model for larger scale
+- Add more test cases for different scenarios
+- Make selectors more stable if developers add test IDs
+- Improve reuse of commands to reduce duplicate code
+- Add basic test reports
+- Run tests in CI pipeline like GitHub Actions
 
-CI integration (GitHub Actions / Jenkins)
+ ---
 
-Reporting (screenshots, videos, HTML reports)
+# Summary
 
-Environment handling using env variables
+This project shows:
+- Realistic UI automation
+- API + UI validation
+- Debugging flaky tests
+- Clean Cypress structure
+- Practical test design approach
+
+
